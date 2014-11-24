@@ -9,12 +9,18 @@
     <url>http://maven.apache.org</url>
 
     <build>
-        <!-- Mandatory plugins for using Spock -->
         <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.gmaven</groupId>
                 <artifactId>gmaven-plugin</artifactId>
-                <version>1.4</version>
+                <version>1.5</version>
                 <configuration>
                     <providerSelection>2.0</providerSelection>
                 </configuration>
@@ -68,10 +74,24 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency> <!-- enables mocking of classes (in addition to interfaces) -->
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>3.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency> <!-- enables mocking of classes without default constructor (together with CGLIB) -->
+            <groupId>org.objenesis</groupId>
+            <artifactId>objenesis</artifactId>
+            <version>2.1</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-all</artifactId>
             <version>2.3.7</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
