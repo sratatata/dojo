@@ -1,0 +1,27 @@
+{
+  "name": "store",
+  "authors": [
+    "Wojciech Zarski <wojciech.zarski@gmail.com>"
+  ],
+  "description": "angular tutorial",
+  "main": "index.html",
+  "moduleType": [],
+  "keywords": [
+    "angular",
+    "tutorial"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "angular": "~1.4.8"
+  }
+}

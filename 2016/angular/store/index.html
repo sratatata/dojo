@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html ng-app="store">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body ng-controller="StoreController as store">
+  <ul class="list-grup">
+    <li class="list-group-item" ng-repeat="product in store.products | orderBy: '-price'">
+      <h3>
+        <product-title></product-title>
+      </h3>
+      <product-panels>
+
+      </product-panels>
+  </li>blockquote
+</ul>
+<script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="app.js"></script>
+<script type="text/javascript" src="products.js"></script>
+</body>
+</html>
