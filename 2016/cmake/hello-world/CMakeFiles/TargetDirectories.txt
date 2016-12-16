@@ -1,0 +1,1 @@
+/home/lb_lb/Projects/dojo/2016/cmake/hello-world/CMakeFiles/hello.dir
