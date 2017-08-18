@@ -1,4 +1,4 @@
-package net.zarski.dojo.webstore.hello;
+package net.zarski.dojo.webstore;
 
 /**
  * Created by lb_lb on 18.08.17.
