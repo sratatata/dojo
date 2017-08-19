@@ -1,5 +1,6 @@
 package net.zarski.dojo.webstore;
 
+import net.zarski.dojo.webstore.domain.Product;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+
+import java.util.Arrays;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -28,8 +31,10 @@ public class StoreFunctionalTest {
     @Test
     @Category({SlowTests.class, FunctionalTests.class})
     public void downloadsListOfProducts() {
-        ResponseEntity<String> responseEntity = restTemplate.getForEntity("/products", String.class);
-        assertThat(responseEntity.getStatusCodeValue()).isEqualTo(200);
-        assertThat(responseEntity.getBody()).isEqualTo("[{\"id\":1,\"name\":\"Test1\"},{\"id\":2,\"name\":\"Test2\"}]");
+        Product[] products = restTemplate.getForObject("/products", Product[].class);
+        assertThat(Arrays.asList(products))
+                .contains(
+                        new Product(1L, "Test1"),
+                        new Product(2L, "Test2"));
     }
 }

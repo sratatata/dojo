@@ -21,7 +21,7 @@ public class StoreCoreTest {
     public void isReturningListOfProducts(){
         ProductsRepository products = mock(ProductsRepository.class);
         StoreCore store = new StoreCore(products);
-        when(products.findAll()).thenReturn(Arrays.asList(new Product()));
+        when(products.findAll()).thenReturn(Arrays.asList(new Product(1L, "Test1")));
 
         List<Product> productsList = store.listAllProducts();
         assertThat(productsList).isNotEmpty();
