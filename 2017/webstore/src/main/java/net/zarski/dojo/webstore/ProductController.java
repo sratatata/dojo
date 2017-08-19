@@ -22,8 +22,6 @@ public class ProductController {
     @RequestMapping(value = "/products", method = RequestMethod.GET, produces="application/json")
     @ResponseBody
     public List<Product> listOfProducts() {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Content-Type", "application/json");
         return storeCore.listAllProducts();
 
     }
