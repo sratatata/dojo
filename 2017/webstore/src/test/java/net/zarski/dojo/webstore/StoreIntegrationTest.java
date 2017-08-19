@@ -1,8 +1,11 @@
 package net.zarski.dojo.webstore;
 
 import net.zarski.dojo.webstore.domain.Product;
+import net.zarski.dojo.webstore.domain.StoreCore;
 import net.zarski.dojo.webstore.repositories.ProductsRepository;
+import org.apache.catalina.Store;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,8 +26,10 @@ public class StoreIntegrationTest {
     ProductsRepository repository;
 
     @Test
+    @Category(SlowTests.class)
     public void findsAllProducts() {
-        Collection<Product> products = this.repository.findAll();
+        StoreCore storeCore = new StoreCore(repository);
+        Collection<Product> products = storeCore.listAllProducts();
         assertThat(products.size()).isGreaterThan(1);
     }
 }
