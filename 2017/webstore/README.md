@@ -59,6 +59,19 @@ For running tests:
 
 [draw.io link](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=webstore-firstdata.xml#Uhttps%3A%2F%2Fraw.githubusercontent.com%2Fsratatata%2Fdojo%2Fweb_store_first_data%2F2017%2Fwebstore%2Fdocs-statics%2Fwebstore-firstdata.xml)
 
+Products contains it's price. 
+Cart has it's id which in this example is session_id, and one to many relation to product. 
+Price is copied to the cart in case price could be changed, we would like to avoid changes in 
+already realized orders or existing carts. 
+
+In more realistic example, we could introduce PriceTag table which could contain prices with timestamps.
+This could be used for reporting or for updating existing not realized carts. 
+
+Another thing we could implement is orders table, which could contain already realized orders ("copies" from cart) and removing 
+cart row after realization of order. 
+
+For sake of simplicity I've not implementing ordering feature as not requested one. 
+
 ## Packages and architecture
 
 I've focused on core based architecture. 
