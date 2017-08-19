@@ -12,4 +12,6 @@ import java.util.List;
 public interface ProductsRepository extends Repository<Product, Long> {
 
     List<Product> findAll();
+
+    Product findById(long id);
 }

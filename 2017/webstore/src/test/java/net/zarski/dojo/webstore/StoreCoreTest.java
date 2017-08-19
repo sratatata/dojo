@@ -17,6 +17,8 @@ import static org.assertj.core.api.Assertions.*;
  */
 @Category(FastTests.class)
 public class StoreCoreTest {
+    private static final long PRODUCT_ID = 1L;
+
     @Test
     public void isReturningListOfProducts(){
         ProductsRepository products = mock(ProductsRepository.class);
@@ -25,5 +27,16 @@ public class StoreCoreTest {
 
         List<Product> productsList = store.listAllProducts();
         assertThat(productsList).isNotEmpty();
+    }
+
+    @Test
+    public void isReturningProductById(){
+        ProductsRepository products = mock(ProductsRepository.class);
+        StoreCore store = new StoreCore(products);
+        when(products.findById(PRODUCT_ID)).thenReturn(new Product(PRODUCT_ID, "Test1", "Desc1"));
+
+        Product product = store.findProductById(PRODUCT_ID);
+        assertThat(product).hasFieldOrPropertyWithValue("name", "Test1");
+        assertThat(product).hasFieldOrPropertyWithValue("description", "Desc1");
     }
 }

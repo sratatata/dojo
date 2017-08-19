@@ -20,9 +20,14 @@ public class ProductController {
     StoreCore storeCore;
 
     @RequestMapping(value = "/products", method = RequestMethod.GET, produces="application/json")
-    @ResponseBody
     public List<Product> listOfProducts() {
         return storeCore.listAllProducts();
+
+    }
+
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.GET, produces="application/json")
+    public Product listOfProducts(@PathVariable("id") Long id) {
+        return storeCore.findProductById(id);
 
     }
 
