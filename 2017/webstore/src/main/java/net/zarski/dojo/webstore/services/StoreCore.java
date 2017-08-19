@@ -22,4 +22,8 @@ public class StoreCore {
     public List<Product> listAllProducts() {
         return productsRepository.findAll();
     }
+
+    public Product findProductById(long productId) {
+        return productsRepository.findById(productId);
+    }
 }

@@ -21,6 +21,7 @@ import java.util.Collection;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class StoreIntegrationTest {
+    private static final long PRODUCT_ID = 1L;
     @Autowired
     ProductsRepository repository;
 
@@ -30,5 +31,14 @@ public class StoreIntegrationTest {
         StoreCore storeCore = new StoreCore(repository);
         Collection<Product> products = storeCore.listAllProducts();
         assertThat(products.size()).isGreaterThan(1);
+    }
+
+    @Test
+    @Category(SlowTests.class)
+    public void findsProductById() {
+        StoreCore storeCore = new StoreCore(repository);
+        Product product = storeCore.findProductById(PRODUCT_ID);
+        assertThat(product).hasFieldOrPropertyWithValue("name", "Carrots");
+        assertThat(product).hasFieldOrPropertyWithValue("description", "Fresh and juicy carrots from outer space");
     }
 }
