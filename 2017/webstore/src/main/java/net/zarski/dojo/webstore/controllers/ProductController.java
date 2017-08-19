@@ -1,4 +1,4 @@
-package net.zarski.dojo.webstore;
+package net.zarski.dojo.webstore.controllers;
 
 /**
  * Created by lb_lb on 18.08.17.
