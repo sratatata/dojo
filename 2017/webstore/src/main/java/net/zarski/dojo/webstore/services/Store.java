@@ -11,11 +11,11 @@ import java.util.List;
  * Created by lb_lb on 18.08.17.
  */
 @Service
-public class StoreCore {
-    ProductsRepository productsRepository;
+public class Store {
+    private ProductsRepository productsRepository;
 
     @Autowired
-    public StoreCore(ProductsRepository products) {
+    public Store(ProductsRepository products) {
         productsRepository = products;
     }
 

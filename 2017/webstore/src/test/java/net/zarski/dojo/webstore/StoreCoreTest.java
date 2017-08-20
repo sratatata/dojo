@@ -1,7 +1,7 @@
 package net.zarski.dojo.webstore;
 
 import net.zarski.dojo.webstore.domain.Product;
-import net.zarski.dojo.webstore.services.StoreCore;
+import net.zarski.dojo.webstore.services.Store;
 import net.zarski.dojo.webstore.repositories.ProductsRepository;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -24,7 +24,7 @@ public class StoreCoreTest {
     @Test
     public void isReturningListOfProducts(){
         ProductsRepository products = mock(ProductsRepository.class);
-        StoreCore store = new StoreCore(products);
+        Store store = new Store(products);
         when(products.findAll()).thenReturn(Arrays.asList(new Product(1L, "Test1", "Desc1")));
 
         List<Product> productsList = store.listAllProducts();
@@ -34,7 +34,7 @@ public class StoreCoreTest {
     @Test
     public void isReturningProductById(){
         ProductsRepository products = mock(ProductsRepository.class);
-        StoreCore store = new StoreCore(products);
+        Store store = new Store(products);
         when(products.findById(PRODUCT_ID)).thenReturn(new Product(PRODUCT_ID, "Test1", "Desc1"));
 
         Product product = store.findProductById(PRODUCT_ID);
@@ -45,7 +45,7 @@ public class StoreCoreTest {
     @Test
     public void isReturningProductByName() {
         ProductsRepository products = mock(ProductsRepository.class);
-        StoreCore store = new StoreCore(products);
+        Store store = new Store(products);
         when(products.findByName(PRODUCT_NAME)).thenReturn(Arrays.asList(EXPECTED_PRODUCT));
 
         List<Product> resp = store.findProductByName(PRODUCT_NAME);
