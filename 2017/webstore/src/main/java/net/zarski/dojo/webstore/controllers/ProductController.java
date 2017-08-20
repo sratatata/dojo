@@ -8,7 +8,6 @@ import net.zarski.dojo.webstore.domain.Product;
 import net.zarski.dojo.webstore.services.StoreCore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.*;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,8 +25,14 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET, produces="application/json")
-    public Product listOfProducts(@PathVariable("id") Long id) {
+    public Product productDetails(@PathVariable("id") Long id) {
         return storeCore.findProductById(id);
+
+    }
+
+    @RequestMapping(value = "/products", method = RequestMethod.GET, produces="application/json", params="name")
+    public List<Product> searchProductsByName(@RequestParam(value="name", required = true) String name) {
+        return storeCore.findProductByName(name);
 
     }
 

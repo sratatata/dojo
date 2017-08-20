@@ -18,6 +18,8 @@ import static org.assertj.core.api.Assertions.*;
 @Category(FastTests.class)
 public class StoreCoreTest {
     private static final long PRODUCT_ID = 1L;
+    private static final String PRODUCT_NAME = "Cocoa";
+    private static final Product EXPECTED_PRODUCT = new Product(PRODUCT_ID, "Cocoa", "Delicious like apples, but cocoas!");
 
     @Test
     public void isReturningListOfProducts(){
@@ -38,5 +40,15 @@ public class StoreCoreTest {
         Product product = store.findProductById(PRODUCT_ID);
         assertThat(product).hasFieldOrPropertyWithValue("name", "Test1");
         assertThat(product).hasFieldOrPropertyWithValue("description", "Desc1");
+    }
+
+    @Test
+    public void isReturningProductByName() {
+        ProductsRepository products = mock(ProductsRepository.class);
+        StoreCore store = new StoreCore(products);
+        when(products.findByName(PRODUCT_NAME)).thenReturn(Arrays.asList(EXPECTED_PRODUCT));
+
+        List<Product> resp = store.findProductByName(PRODUCT_NAME);
+        assertThat(resp).containsExactly(EXPECTED_PRODUCT);
     }
 }
