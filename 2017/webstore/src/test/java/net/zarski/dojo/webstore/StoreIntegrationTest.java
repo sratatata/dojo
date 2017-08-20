@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -24,6 +25,7 @@ public class StoreIntegrationTest {
     private static final long PRODUCT_ID = 1L;
     @Autowired
     ProductsRepository repository;
+    private String PRODUCT_NAME = "Tomatoes";
 
     @Test
     @Category(SlowTests.class)
@@ -40,5 +42,13 @@ public class StoreIntegrationTest {
         Product product = storeCore.findProductById(PRODUCT_ID);
         assertThat(product).hasFieldOrPropertyWithValue("name", "Carrots");
         assertThat(product).hasFieldOrPropertyWithValue("description", "Fresh and juicy carrots from outer space");
+    }
+
+    @Test
+    @Category(SlowTests.class)
+    public void findsProductByName() {
+        StoreCore storeCore = new StoreCore(repository);
+        List<Product> products = storeCore.findProductByName(PRODUCT_NAME);
+        assertThat(products).containsExactly(new Product(2L, "Tomatoes", "Round and red, like sun - during blood bath sundown"));
     }
 }

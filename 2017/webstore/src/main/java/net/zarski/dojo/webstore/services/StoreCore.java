@@ -26,4 +26,8 @@ public class StoreCore {
     public Product findProductById(long productId) {
         return productsRepository.findById(productId);
     }
+
+    public List<Product> findProductByName(String name) {
+        return productsRepository.findByName(name);
+    }
 }
