@@ -129,7 +129,7 @@ public class StoreFunctionalTest {
         assertThat(cart)
                 .isEqualTo(
                         //TODO update details of cart when designed
-                        new Cart(1L)
+                        new Cart("1231234123ASD")
                 );
     }
 
