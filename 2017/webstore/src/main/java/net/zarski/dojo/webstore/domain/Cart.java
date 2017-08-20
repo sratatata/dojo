@@ -1,6 +1,7 @@
 package net.zarski.dojo.webstore.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +22,7 @@ public class Cart implements Serializable{
     private String sessionId;
 
 
-    public Cart(String sessionId) {
+    public Cart(@JsonProperty("sessionId") String sessionId) {
         this.sessionId = sessionId;
     }
 

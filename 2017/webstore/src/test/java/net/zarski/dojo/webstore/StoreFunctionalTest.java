@@ -8,8 +8,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequest;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -68,16 +70,11 @@ public class StoreFunctionalTest {
     @Category({SlowTests.class, FunctionalTests.class})
     public void createCart() throws IOException {
 
-        final RequestCallback requestCallback = new RequestCallback() {
-            @Override
-            public void doWithRequest(ClientHttpRequest clientHttpRequest) throws IOException {
-
-            }
-        };
-
-        ClientHttpResponse response = restTemplate.execute("/carts", HttpMethod.POST, requestCallback, new ResponseFromHeadersExtractor());
+        HttpEntity<String> request = new HttpEntity<>("123F");
+        ResponseEntity<Cart> response = restTemplate.exchange("/carts", HttpMethod.POST, request, Cart.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-
+        assertThat(response.getBody().getId()).isOfAnyClassIn(Long.class);
+        assertThat(response.getBody().getSessionId()).isEqualTo("123F");
     }
 
     @Test
