@@ -35,8 +35,8 @@ public class Store {
         return productsRepository.findByName(name);
     }
 
-    public void registerNewCart(String sessionId) {
+    public Cart registerNewCart(String sessionId) {
         Cart cart = new Cart(sessionId);
-        cartsRepository.save(cart);
+        return cartsRepository.save(cart);
     }
 }
