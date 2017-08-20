@@ -5,7 +5,7 @@ package net.zarski.dojo.webstore.controllers;
  */
 
 import net.zarski.dojo.webstore.domain.Product;
-import net.zarski.dojo.webstore.services.StoreCore;
+import net.zarski.dojo.webstore.services.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.web.bind.annotation.*;
@@ -14,26 +14,26 @@ import java.util.List;
 
 @RestController
 @EnableAutoConfiguration
+@RequestMapping(value = "/products")
 public class ProductController {
     @Autowired
-    StoreCore storeCore;
+    Store store;
 
-    @RequestMapping(value = "/products", method = RequestMethod.GET, produces="application/json")
+    @RequestMapping(value = "", method = RequestMethod.GET, produces="application/json")
     public List<Product> listOfProducts() {
-        return storeCore.listAllProducts();
-
+        return store.listAllProducts();
     }
 
-    @RequestMapping(value = "/products/{id}", method = RequestMethod.GET, produces="application/json")
-    public Product productDetails(@PathVariable("id") Long id) {
-        return storeCore.findProductById(id);
-
-    }
-
-    @RequestMapping(value = "/products", method = RequestMethod.GET, produces="application/json", params="name")
+    @RequestMapping(value = "", method = RequestMethod.GET, produces="application/json", params="name")
     public List<Product> searchProductsByName(@RequestParam(value="name", required = true) String name) {
-        return storeCore.findProductByName(name);
-
+        return store.findProductByName(name);
     }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.GET, produces="application/json")
+    public Product productDetails(@PathVariable("id") Long id) {
+        return store.findProductById(id);
+    }
+
+
 
 }

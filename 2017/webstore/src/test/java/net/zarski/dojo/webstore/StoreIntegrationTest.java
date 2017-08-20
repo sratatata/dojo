@@ -1,7 +1,7 @@
 package net.zarski.dojo.webstore;
 
 import net.zarski.dojo.webstore.domain.Product;
-import net.zarski.dojo.webstore.services.StoreCore;
+import net.zarski.dojo.webstore.services.Store;
 import net.zarski.dojo.webstore.repositories.ProductsRepository;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -30,7 +30,7 @@ public class StoreIntegrationTest {
     @Test
     @Category(SlowTests.class)
     public void findsAllProducts() {
-        StoreCore storeCore = new StoreCore(repository);
+        Store storeCore = new Store(repository);
         Collection<Product> products = storeCore.listAllProducts();
         assertThat(products.size()).isGreaterThan(1);
     }
@@ -38,7 +38,7 @@ public class StoreIntegrationTest {
     @Test
     @Category(SlowTests.class)
     public void findsProductById() {
-        StoreCore storeCore = new StoreCore(repository);
+        Store storeCore = new Store(repository);
         Product product = storeCore.findProductById(PRODUCT_ID);
         assertThat(product).hasFieldOrPropertyWithValue("name", "Carrots");
         assertThat(product).hasFieldOrPropertyWithValue("description", "Fresh and juicy carrots from outer space");
@@ -47,7 +47,7 @@ public class StoreIntegrationTest {
     @Test
     @Category(SlowTests.class)
     public void findsProductByName() {
-        StoreCore storeCore = new StoreCore(repository);
+        Store storeCore = new Store(repository);
         List<Product> products = storeCore.findProductByName(PRODUCT_NAME);
         assertThat(products).containsExactly(new Product(2L, "Tomatoes", "Round and red, like sun - during blood bath sundown"));
     }
