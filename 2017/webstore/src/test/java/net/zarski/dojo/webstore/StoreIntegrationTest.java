@@ -1,7 +1,6 @@
 package net.zarski.dojo.webstore;
 
 import net.zarski.dojo.webstore.domain.Cart;
-import net.zarski.dojo.webstore.domain.CartPosition;
 import net.zarski.dojo.webstore.domain.Product;
 import net.zarski.dojo.webstore.repositories.CartsRepository;
 import net.zarski.dojo.webstore.services.Store;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.AdditionalAnswers.delegatesTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -32,6 +30,7 @@ import java.util.List;
 public class StoreIntegrationTest {
     private static final long PRODUCT_ID = 1L;
     private static final String SESSION_ID = "123D";
+    private static final String CART_WITH_PRODUCT = "QWE123";
     private String PRODUCT_NAME = "Tomatoes";
 
     @Autowired
@@ -82,5 +81,15 @@ public class StoreIntegrationTest {
 
         store.addProductToCart(SESSION_ID, PRODUCT_ID, 3);
         assertThat(cartsRepository.findBySessionId(SESSION_ID).getProducts()).hasSize(1);
+    }
+
+    @Test
+    @Category(SlowTests.class)
+    public void removesProductFromCart() {
+        Store store = new Store(productsRepository, cartsRepository);
+        store.findCartBySessionId(CART_WITH_PRODUCT);
+
+        store.removeProductFromCart(SESSION_ID, PRODUCT_ID);
+        assertThat(cartsRepository.findBySessionId(SESSION_ID).getProducts()).hasSize(0);
     }
 }
