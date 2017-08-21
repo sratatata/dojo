@@ -1,5 +1,6 @@
-package net.zarski.dojo.webstore;
+package net.zarski.dojo.webstore.domain;
 
+import net.zarski.dojo.webstore.FastTests;
 import net.zarski.dojo.webstore.domain.Cart;
 import net.zarski.dojo.webstore.domain.Product;
 import net.zarski.dojo.webstore.repositories.CartsRepository;
@@ -19,7 +20,7 @@ import static org.assertj.core.api.Assertions.*;
  * Created by lb_lb on 18.08.17.
  */
 @Category(FastTests.class)
-public class StoreCoreTest {
+public class StoreTest {
     private static final long PRODUCT_ID = 1L;
     private static final String PRODUCT_NAME = "Cocoa";
     private static final Product EXPECTED_PRODUCT = new Product(PRODUCT_ID, "Cocoa", "Delicious like apples, but cocoas!");
@@ -95,5 +96,21 @@ public class StoreCoreTest {
         Cart cart = store.findCartBySessionId(SESSION_ID);
 
         assertThat(cart).isEqualTo(EXPECTED_CART);
+    }
+
+    @Test
+    public void isRemovingProductFromCart(){
+        CartsRepository carts = mock(CartsRepository.class);
+        ProductsRepository products = mock(ProductsRepository.class);
+        Cart mockedCart = mock(Cart.class); //non anemic domain object, contains logic
+        Store store = new Store(products, carts);
+
+        when(products.findById(PRODUCT_ID)).thenReturn(EXPECTED_PRODUCT);
+        when(carts.findBySessionId(SESSION_ID)).thenReturn(mockedCart);
+
+        store.removeProductToCart(SESSION_ID, PRODUCT_ID, 3);
+
+        verify(mockedCart).removeProduct(EXPECTED_PRODUCT);
+        verify(carts).save(mockedCart);
     }
 }

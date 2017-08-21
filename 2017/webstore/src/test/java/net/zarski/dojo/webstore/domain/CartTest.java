@@ -35,4 +35,17 @@ public class CartTest {
                     assertThat(cartPosition).hasFieldOrPropertyWithValue("product", EXPECTED_PRODUCT);
                 });
     }
+
+    @Test
+    @Category(FastTests.class)
+    public void removeExistingProduct() {
+        Cart cart = new Cart("123D");
+        cart.addProduct(EXPECTED_PRODUCT, 3);
+
+        cart.removeProduct(EXPECTED_PRODUCT);
+
+        assertThat(cart.getProducts()).doesNotContain(
+                new CartPosition(EXPECTED_PRODUCT, 3)
+        );
+    }
 }

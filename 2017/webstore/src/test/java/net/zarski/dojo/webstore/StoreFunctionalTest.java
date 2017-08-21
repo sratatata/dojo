@@ -38,6 +38,7 @@ public class StoreFunctionalTest {
     private static final String CART_ID = "1";
     private static final String EXISTING_CART = "543ASD";
     private static final int EXAMPLE_PRODUCTS_AMOUNT = 3;
+    private static final String EXISTING_CART_WITH_PRODUCT = "QWE123";
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -92,14 +93,7 @@ public class StoreFunctionalTest {
     @Category({SlowTests.class, FunctionalTests.class})
     public void removeProductFromCart() throws IOException {
 
-        final RequestCallback requestCallback = new RequestCallback() {
-            @Override
-            public void doWithRequest(ClientHttpRequest clientHttpRequest) throws IOException {
-
-            }
-        };
-
-        ClientHttpResponse response = restTemplate.execute("/carts/{cart_id}/products/{product_id}", HttpMethod.DELETE, requestCallback,   new ResponseFromHeadersExtractor(), CART_ID, PRODUCT_ID);
+        ResponseEntity<String> response = restTemplate.exchange("/carts/{session_id}/products/{product_id}", HttpMethod.DELETE, null, String.class, EXISTING_CART_WITH_PRODUCT, PRODUCT_ID);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 

@@ -50,4 +50,11 @@ public class Store {
     public Cart findCartBySessionId(String sessionId) {
         return cartsRepository.findBySessionId(sessionId);
     }
+
+    public void removeProductToCart(String sessionId, long productId, int amount) {
+        Cart cart = this.findCartBySessionId(sessionId);
+        Product product = this.findProductById(productId);
+        cart.removeProduct(product);
+        cartsRepository.save(cart);
+    }
 }
