@@ -1,6 +1,7 @@
 package net.zarski.dojo.webstore;
 
 import net.zarski.dojo.webstore.domain.Cart;
+import net.zarski.dojo.webstore.domain.CartPosition;
 import net.zarski.dojo.webstore.domain.Product;
 import net.zarski.dojo.webstore.repositories.CartsRepository;
 import net.zarski.dojo.webstore.services.Store;
@@ -69,8 +70,17 @@ public class StoreIntegrationTest {
     public void registerNewCart() {
         Store store = new Store(productsRepository, cartsRepository);
 
-
         Cart newCart = store.registerNewCart(SESSION_ID);
         assertThat(cartsRepository.exists(newCart.getId())).isTrue();
+    }
+
+    @Test
+    @Category(SlowTests.class)
+    public void addsProductToCart() {
+        Store store = new Store(productsRepository, cartsRepository);
+        store.registerNewCart(SESSION_ID);
+
+        store.addProductToCart(SESSION_ID, PRODUCT_ID, 3);
+        assertThat(cartsRepository.findBySessionId(SESSION_ID).getProducts()).hasSize(1);
     }
 }

@@ -20,11 +20,23 @@ public class Cart implements Serializable{
     @Column
     private String sessionId;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cart")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name="fk_cart")
     private Set<CartPosition> products;
 
     public Cart(@JsonProperty("sessionId") String sessionId) {
         this.sessionId = sessionId;
+    }
+
+    public void addProduct(Product product, int amount) {
+        if(this.products == null){
+            this.products = new HashSet<>();
+        }
+        products.add(new CartPosition(product, amount));
+    }
+
+    //Dummy constructor for hibernate, accessed by reflection
+    private Cart() {
     }
 
     public Long getId() {
@@ -39,10 +51,17 @@ public class Cart implements Serializable{
         return products;
     }
 
-    public void addProduct(Product product, int amount) {
-        if(this.products == null){
-            this.products = new HashSet<>();
-        }
-        products.add(new CartPosition(product, amount));
+    //Dummy setters for hibernate, accessed by reflection
+
+    private void setId(Long id) {
+        this.id = id;
+    }
+
+    private void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    private void setProducts(Set<CartPosition> products) {
+        this.products = products;
     }
 }

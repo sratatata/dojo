@@ -11,12 +11,16 @@ public class CartPosition implements Serializable {
     @GeneratedValue
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "fk_product", nullable = false)
     private Product product;
-    private int amount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fk_cart", nullable = false)
-    private Cart cart;
+//    @ManyToOne
+//    @JoinColumn(name = "fk_cart", nullable = false)
+//    private Cart cart;
+
+    @Column(name = "amount")
+    private int amount;
 
     public CartPosition(Product product, int amount) {
         this.product = product;
@@ -31,6 +35,10 @@ public class CartPosition implements Serializable {
         return amount;
     }
 
+//    public Cart getCart() {
+//        return cart;
+//    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -39,15 +47,38 @@ public class CartPosition implements Serializable {
         CartPosition that = (CartPosition) o;
 
         if (amount != that.amount) return false;
-        if (product != null ? !product.equals(that.product) : that.product != null) return false;
-        return cart != null ? cart.equals(that.cart) : that.cart == null;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        return product != null ? product.equals(that.product) : that.product == null;
     }
 
     @Override
     public int hashCode() {
-        int result = product != null ? product.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (product != null ? product.hashCode() : 0);
         result = 31 * result + amount;
-        result = 31 * result + (cart != null ? cart.hashCode() : 0);
         return result;
     }
+
+    //Dummy constructor for hibernate, accessed by reflection
+    private CartPosition() {
+    }
+
+    //Dummy setter for hibernate, accessed by reflection
+    private void setId(Long id) {
+        this.id = id;
+    }
+
+    //Dummy setter for hibernate, accessed by reflection
+    private void setProduct(Product product) {
+        this.product = product;
+    }
+
+    //Dummy setter for hibernate, accessed by reflection
+    private void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+//    public void setCart(Cart cart) {
+//        this.cart = cart;
+//    }
 }
