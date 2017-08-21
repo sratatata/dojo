@@ -26,6 +26,13 @@ public class CartController {
         return store.registerNewCart(sessionId);
     }
 
+    @RequestMapping(value = "{session_id}/products/{product_id}", method = RequestMethod.PUT, produces="application/json")
+    public void addsProductToCart(@PathVariable(name = "session_id") String sessionId,
+                                  @PathVariable(name = "product_id") Long productId,
+                                  @RequestParam(name = "amount") Integer amount) {
+        store.addProductToCart(sessionId, productId, amount);
+    }
+
 
 
 }
