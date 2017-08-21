@@ -47,10 +47,22 @@ public class Cart implements Serializable {
     }
 
     public void removeProduct(Product product) {
-        final boolean cartIsNotEmpty = (this.products != null || !this.products.isEmpty());
-        if (cartIsNotEmpty) {
+        if (isCartIsNotEmpty()) {
             CartPosition cartPosition = this.products.stream().filter(cp -> cp.getProduct().equals(product)).findAny().orElse(null);
             products.remove(cartPosition);
+        }
+    }
+
+    private boolean isCartIsNotEmpty() {
+        return (this.products != null && !this.products.isEmpty());
+    }
+
+    public int getTotal() {
+        if(isCartIsNotEmpty()) {
+            int sumOfProductsInCart = this.products.stream().mapToInt(cp -> cp.getAmount() * cp.getProduct().getPrice()).sum();
+            return sumOfProductsInCart;
+        }else{
+            return 0;
         }
     }
 
@@ -83,6 +95,7 @@ public class Cart implements Serializable {
     private void setProducts(Set<CartPosition> products) {
         this.products = products;
     }
+
 
 
 }

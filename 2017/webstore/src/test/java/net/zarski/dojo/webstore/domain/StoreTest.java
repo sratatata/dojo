@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.*;
 public class StoreTest {
     private static final long PRODUCT_ID = 1L;
     private static final String PRODUCT_NAME = "Cocoa";
-    private static final Product EXPECTED_PRODUCT = new Product(PRODUCT_ID, "Cocoa", "Delicious like apples, but cocoas!");
+    private static final Product EXPECTED_PRODUCT = new Product(PRODUCT_ID, "Cocoa", 255,  "Delicious like apples, but cocoas!");
     private static final String SESSION_ID = "123D";
     private static final Cart EXPECTED_CART = new Cart(SESSION_ID);
 
@@ -32,7 +32,7 @@ public class StoreTest {
         CartsRepository carts = mock(CartsRepository.class);
 
         Store store = new Store(products, carts);
-        when(products.findAll()).thenReturn(Arrays.asList(new Product(1L, "Test1", "Desc1")));
+        when(products.findAll()).thenReturn(Arrays.asList(new Product(1L, "Test1",100, "Desc1")));
 
         List<Product> productsList = store.listAllProducts();
         assertThat(productsList).isNotEmpty();
@@ -44,10 +44,11 @@ public class StoreTest {
         CartsRepository carts = mock(CartsRepository.class);
 
         Store store = new Store(products, carts);
-        when(products.findById(PRODUCT_ID)).thenReturn(new Product(PRODUCT_ID, "Test1", "Desc1"));
+        when(products.findById(PRODUCT_ID)).thenReturn(new Product(PRODUCT_ID, "Test1", 1,"Desc1"));
 
         Product product = store.findProductById(PRODUCT_ID);
         assertThat(product).hasFieldOrPropertyWithValue("name", "Test1");
+        assertThat(product).hasFieldOrPropertyWithValue("price", 1);
         assertThat(product).hasFieldOrPropertyWithValue("description", "Desc1");
     }
 
