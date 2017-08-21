@@ -5,16 +5,13 @@ import net.zarski.dojo.webstore.domain.Product;
 import net.zarski.dojo.webstore.repositories.CartsRepository;
 import net.zarski.dojo.webstore.services.Store;
 import net.zarski.dojo.webstore.repositories.ProductsRepository;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.mockito.ArgumentMatcher;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -27,6 +24,7 @@ public class StoreCoreTest {
     private static final String PRODUCT_NAME = "Cocoa";
     private static final Product EXPECTED_PRODUCT = new Product(PRODUCT_ID, "Cocoa", "Delicious like apples, but cocoas!");
     private static final String SESSION_ID = "123D";
+    private static final Cart EXPECTED_CART = new Cart(SESSION_ID);
 
     @Test
     public void isReturningListOfProducts(){
@@ -73,5 +71,29 @@ public class StoreCoreTest {
         store.registerNewCart(SESSION_ID);
 
         verify(carts, atLeastOnce()).save((Cart) argThat(t -> ((Cart)t).getSessionId().equals("123D")));
+    }
+
+    @Test
+    public void isAddingProductToCart(){
+        CartsRepository carts = mock(CartsRepository.class);
+        ProductsRepository products = mock(ProductsRepository.class);
+        Store store = new Store(products, carts);
+
+        when(products.findById(PRODUCT_ID)).thenReturn(EXPECTED_PRODUCT);
+        when(carts.findBySessionId(SESSION_ID)).thenReturn(EXPECTED_CART);
+        store.addProductToCart(SESSION_ID, PRODUCT_ID, 3);
+        verify(carts, atLeastOnce()).save((Cart) argThat(cart -> ((Cart)cart).getProducts().size() == 1));
+    }
+
+    @Test
+    public void isReturningCartBySessionId(){
+        CartsRepository carts = mock(CartsRepository.class);
+        ProductsRepository products = mock(ProductsRepository.class);
+        Store store = new Store(products, carts);
+        when(carts.findBySessionId(SESSION_ID)).thenReturn(EXPECTED_CART);
+
+        Cart cart = store.findCartBySessionId(SESSION_ID);
+
+        assertThat(cart).isEqualTo(EXPECTED_CART);
     }
 }
