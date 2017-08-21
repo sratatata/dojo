@@ -23,6 +23,7 @@ import org.springframework.web.client.ResponseExtractor;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
@@ -108,15 +109,14 @@ public class StoreFunctionalTest {
     @Test
     @Category({SlowTests.class, FunctionalTests.class})
     public void updateAmountOfProductInCart() throws IOException {
-        final RequestCallback requestCallback = new RequestCallback() {
-            @Override
-            public void doWithRequest(ClientHttpRequest clientHttpRequest) throws IOException {
+        assertThat(cartsRepository.findBySessionId(EXISTING_CART_WITH_PRODUCT).getProducts()).hasSize(1);
 
-            }
-        };
-
-        ClientHttpResponse response = restTemplate.execute("/carts/{cart_id}/products/{product_id}&amount={amount}", HttpMethod.PUT, requestCallback,   new ResponseFromHeadersExtractor(), CART_ID, PRODUCT_ID, "2");
+        int newAmount = 1;
+        ResponseEntity<String> response = restTemplate.exchange("/carts/{session_id}/products/{product_id}?amount={amount}", HttpMethod.PUT, null, String.class, EXISTING_CART_WITH_PRODUCT, PRODUCT_ID, newAmount);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Optional<CartPosition> cartPosition = cartsRepository.findBySessionId(EXISTING_CART_WITH_PRODUCT).getProducts().stream().findFirst();
+        assertThat(cartPosition).isNotEmpty();
+        assertThat(cartPosition.get()).hasFieldOrPropertyWithValue("amount", 4);
     }
 
     @Test
