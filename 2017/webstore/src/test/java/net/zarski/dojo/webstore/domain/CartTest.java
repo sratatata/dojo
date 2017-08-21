@@ -50,7 +50,7 @@ public class CartTest {
 
     @Test
     @Category(FastTests.class)
-    public void updatesProductAmount(){
+    public void increaseProductAmount(){
         Cart cart = new Cart("123D");
         cart.addProduct(EXPECTED_PRODUCT, 3);
         cart.addProduct(EXPECTED_PRODUCT, 3);
@@ -61,4 +61,5 @@ public class CartTest {
                     assertThat(cartPosition).hasFieldOrPropertyWithValue("product", EXPECTED_PRODUCT);
                 });
     }
+
 }
