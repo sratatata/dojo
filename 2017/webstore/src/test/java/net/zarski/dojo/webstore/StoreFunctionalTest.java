@@ -36,6 +36,8 @@ public class StoreFunctionalTest {
     private static final String SEARCH_NAME = "Tomatoes";
     private static final String PRODUCT_ID = "1";
     private static final String CART_ID = "1";
+    private static final String EXISTING_CART = "543ASD";
+    private static final int EXAMPLE_PRODUCTS_AMOUNT = 3;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -82,7 +84,7 @@ public class StoreFunctionalTest {
     @Test
     @Category({SlowTests.class, FunctionalTests.class})
     public void addProductToCart() throws IOException {
-        ResponseEntity<String> response = restTemplate.exchange("/carts/{cart_id}/products/{product_id}?amount={amount}", HttpMethod.PUT, null, String.class, 1L, 2L, 3);
+        ResponseEntity<String> response = restTemplate.exchange("/carts/{session_id}/products/{product_id}?amount={amount}", HttpMethod.PUT, null, String.class, EXISTING_CART, PRODUCT_ID, EXAMPLE_PRODUCTS_AMOUNT);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
