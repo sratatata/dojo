@@ -59,7 +59,7 @@ public class Cart implements Serializable {
 
     public int getTotal() {
         if(isCartIsNotEmpty()) {
-            int sumOfProductsInCart = this.products.stream().mapToInt(cp -> cp.getAmount() * cp.getProduct().getPrice()).sum();
+            int sumOfProductsInCart = this.products.stream().mapToInt(cp -> cp.getAmount() * cp.getUnitPrice()).sum();
             return sumOfProductsInCart;
         }else{
             return 0;
