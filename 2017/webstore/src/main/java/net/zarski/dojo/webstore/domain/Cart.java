@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Cart implements Serializable{
+public class Cart implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -21,7 +21,7 @@ public class Cart implements Serializable{
     private String sessionId;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name="fk_cart")
+    @JoinColumn(name = "fk_cart")
     private Set<CartPosition> products;
 
     public Cart(@JsonProperty("sessionId") String sessionId) {
@@ -29,10 +29,18 @@ public class Cart implements Serializable{
     }
 
     public void addProduct(Product product, int amount) {
-        if(this.products == null){
+        if (this.products == null) {
             this.products = new HashSet<>();
         }
         products.add(new CartPosition(product, amount));
+    }
+
+    public void removeProduct(Product product) {
+        final boolean cartIsNotEmpty = (this.products != null || !this.products.isEmpty());
+        if (cartIsNotEmpty) {
+            CartPosition cartPosition = this.products.stream().filter(cp -> cp.getProduct().equals(product)).findAny().orElse(null);
+            products.remove(cartPosition);
+        }
     }
 
     //Dummy constructor for hibernate, accessed by reflection
@@ -64,4 +72,6 @@ public class Cart implements Serializable{
     private void setProducts(Set<CartPosition> products) {
         this.products = products;
     }
+
+
 }
