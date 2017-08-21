@@ -1,7 +1,9 @@
 package net.zarski.dojo.webstore;
 
 import net.zarski.dojo.webstore.domain.Cart;
+import net.zarski.dojo.webstore.domain.CartPosition;
 import net.zarski.dojo.webstore.domain.Product;
+import org.apache.http.HttpResponse;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -80,13 +82,7 @@ public class StoreFunctionalTest {
     @Test
     @Category({SlowTests.class, FunctionalTests.class})
     public void addProductToCart() throws IOException {
-        final RequestCallback requestCallback = new RequestCallback() {
-            @Override
-            public void doWithRequest(ClientHttpRequest clientHttpRequest) throws IOException {
-
-            }
-        };
-        ClientHttpResponse response = restTemplate.execute("/carts/{cart_id}/products&amount={amount}", HttpMethod.POST, requestCallback, new ResponseFromHeadersExtractor(), CART_ID, "2");
+        ResponseEntity<String> response = restTemplate.exchange("/carts/{cart_id}/products/{product_id}?amount={amount}", HttpMethod.PUT, null, String.class, 1L, 2L, 3);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
