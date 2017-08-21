@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -32,7 +33,17 @@ public class Cart implements Serializable {
         if (this.products == null) {
             this.products = new HashSet<>();
         }
-        products.add(new CartPosition(product, amount));
+
+        Optional<CartPosition> cartPositionOptional = products.stream().filter(cp -> cp.getProduct().equals(product)).findAny();
+        if (cartPositionOptional.isPresent()) {
+            CartPosition cartPosition = cartPositionOptional.get();
+            int oldAmount = cartPosition.getAmount();
+            products.remove(cartPosition);
+            products.add(new CartPosition(product, oldAmount + amount));
+        } else {
+            products.add(new CartPosition(product, amount));
+        }
+
     }
 
     public void removeProduct(Product product) {
