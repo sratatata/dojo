@@ -39,4 +39,15 @@ public class Store {
         Cart cart = new Cart(sessionId);
         return cartsRepository.save(cart);
     }
+
+    public void addProductToCart(String sessionId, long productId, int amount) {
+        Cart cart = this.findCartBySessionId(sessionId);
+        Product product = this.findProductById(productId);
+        cart.addProduct(product, amount);
+        cartsRepository.save(cart);
+    }
+
+    public Cart findCartBySessionId(String sessionId) {
+        return cartsRepository.findBySessionId(sessionId);
+    }
 }
