@@ -50,7 +50,6 @@ public class StoreFunctionalTest {
     private CartsRepository cartsRepository;
 
 
-
     @Test
     @Category({SlowTests.class, FunctionalTests.class})
     public void downloadsListOfProducts() {
@@ -135,21 +134,10 @@ public class StoreFunctionalTest {
 
     @Test
     @Category({SlowTests.class, FunctionalTests.class})
-    public void getCart(){
-        Cart cart = restTemplate.getForObject("/products/{id}", Cart.class, CART_ID);
-        assertThat(cart)
-                .isEqualTo(
-                        //TODO update details of cart when designed
-                        new Cart("1231234123ASD")
-                );
+    public void getCart() {
+        Cart cart = restTemplate.getForObject("/carts/{id}", Cart.class, EXISTING_CART);
+        assertThat(cart).hasFieldOrPropertyWithValue("sessionId", EXISTING_CART);
+
     }
 
-    private static class ResponseFromHeadersExtractor implements ResponseExtractor<ClientHttpResponse> {
-
-        @Override
-        public ClientHttpResponse extractData(ClientHttpResponse response) {
-            System.out.println("StringFromHeadersExtractor - response headers: " + response.getHeaders());
-            return response;
-        }
-    }
 }
