@@ -31,7 +31,6 @@ public class CartTest {
 
         assertThat(cart.getProducts())
                 .hasOnlyOneElementSatisfying(cartPosition -> {
-                    assertThat(cartPosition).hasFieldOrPropertyWithValue("amount", 3);
                     assertThat(cartPosition).hasFieldOrPropertyWithValue("product", EXPECTED_PRODUCT);
                 });
     }
@@ -47,5 +46,19 @@ public class CartTest {
         assertThat(cart.getProducts()).doesNotContain(
                 new CartPosition(EXPECTED_PRODUCT, 3)
         );
+    }
+
+    @Test
+    @Category(FastTests.class)
+    public void updatesProductAmount(){
+        Cart cart = new Cart("123D");
+        cart.addProduct(EXPECTED_PRODUCT, 3);
+        cart.addProduct(EXPECTED_PRODUCT, 3);
+
+        assertThat(cart.getProducts())
+                .hasOnlyOneElementSatisfying(cartPosition -> {
+                    assertThat(cartPosition).hasFieldOrPropertyWithValue("amount", 6);
+                    assertThat(cartPosition).hasFieldOrPropertyWithValue("product", EXPECTED_PRODUCT);
+                });
     }
 }
