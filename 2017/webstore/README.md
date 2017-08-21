@@ -47,7 +47,7 @@ I've categorized tests into:
 
 * Fast Tests - junit tests during TDD development
 * Slow Tests - integration tests with DB and Spring context enabled
-* Functional tests for requested functionalities
+* FunctionalTest - __Functional tests for requested functionalities__
 
 For running tests:
 
@@ -60,7 +60,8 @@ For running tests:
 [draw.io link](https://www.draw.io/?lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=webstore-firstdata.xml#Uhttps%3A%2F%2Fraw.githubusercontent.com%2Fsratatata%2Fdojo%2Fweb_store_first_data%2F2017%2Fwebstore%2Fdocs-statics%2Fwebstore-firstdata.xml)
 
 Products contains it's price. 
-Cart has it's id which in this example is session_id, and one to many relation to product. 
+Cart has it's id which in this example is session_id, and many to many relation to product. I've introduced association table
+which contains amount of products.
 Price is copied to the cart in case price could be changed, we would like to avoid changes in 
 already realized orders or existing carts. 
 
@@ -74,7 +75,15 @@ For sake of simplicity I've not implementing ordering feature as not requested o
 
 ## Packages and architecture
 
-I've focused on core based architecture. 
+Typical 3 layer architecture.
+
+Packages:
+
+* controllers - contains rest controllers which calls store service
+* services - service layer which creates/uses domain classes with help of repositories
+* repositories - implements CRUD operations on entities (domain objects)
+
+I've tried to keep domain non anemic, that's why you can find some business logic there.
 
 
 # Development process
@@ -84,3 +93,6 @@ I've created walking skeleton based on spring-boot hello world sample.
 Than I've worked on preparing testing strategy and tools. 
 
 When I was ready I've switched to TDD development.  
+
+I've intentionally focused on happy path solution for sake of simplicity.
+__If you like to see some defending tactics or more polished fragment, please contact me and specify your requirement.__ 

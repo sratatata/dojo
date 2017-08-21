@@ -22,9 +22,13 @@ public class CartPosition implements Serializable {
     @Column(name = "amount")
     private int amount;
 
+    @Column(name = "unitPrice")
+    private int unitPrice;
+
     public CartPosition(Product product, int amount) {
         this.product = product;
         this.amount = amount;
+        this.unitPrice = product.getPrice();
     }
 
     public Product getProduct() {
@@ -39,6 +43,7 @@ public class CartPosition implements Serializable {
 //        return cart;
 //    }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -47,15 +52,15 @@ public class CartPosition implements Serializable {
         CartPosition that = (CartPosition) o;
 
         if (amount != that.amount) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (unitPrice != that.unitPrice) return false;
         return product != null ? product.equals(that.product) : that.product == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (product != null ? product.hashCode() : 0);
+        int result = product != null ? product.hashCode() : 0;
         result = 31 * result + amount;
+        result = 31 * result + unitPrice;
         return result;
     }
 
@@ -78,7 +83,12 @@ public class CartPosition implements Serializable {
         this.amount = amount;
     }
 
-//    public void setCart(Cart cart) {
-//        this.cart = cart;
-//    }
+    //Dummy setter for hibernate, accessed by reflection
+    public void setUnitPrice(int unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public int getUnitPrice() {
+        return unitPrice;
+    }
 }

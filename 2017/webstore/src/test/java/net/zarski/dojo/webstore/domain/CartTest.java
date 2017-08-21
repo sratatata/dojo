@@ -71,4 +71,32 @@ public class CartTest {
 
         assertThat(cart.getTotal()).isEqualTo(50);
     }
+
+    @Test
+    @Category(FastTests.class)
+    public void whenProductsPriceChangeTotalOfAlreadyAddedCartIsNotChanging(){
+        Cart cart = new Cart("123D");
+        cart.addProduct(EXPECTED_PRODUCT, 3);
+        cart.addProduct(EXPECTED_ADDITIONAL_PRODUCT, 1);
+
+        assertThat(cart.getTotal()).isEqualTo(50);
+
+        EXPECTED_PRODUCT.setPrice(100);
+
+        assertThat(cart.getTotal()).isEqualTo(50);
+    }
+
+    @Test
+    @Category(FastTests.class)
+    public void addProductCopiesPrice() {
+        Cart cart = new Cart("123D");
+        cart.addProduct(EXPECTED_PRODUCT, 3);
+
+        assertThat(cart.getProducts())
+                .hasOnlyOneElementSatisfying(cartPosition -> {
+                    assertThat(cartPosition).hasFieldOrPropertyWithValue("amount", 3);
+                    assertThat(cartPosition).hasFieldOrPropertyWithValue("product", EXPECTED_PRODUCT);
+                    assertThat(cartPosition).hasFieldOrPropertyWithValue("unitPrice", EXPECTED_PRODUCT.getPrice());
+                });
+    }
 }
