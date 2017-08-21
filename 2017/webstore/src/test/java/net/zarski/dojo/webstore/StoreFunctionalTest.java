@@ -56,8 +56,8 @@ public class StoreFunctionalTest {
         Product[] products = restTemplate.getForObject("/products", Product[].class);
         assertThat(Arrays.asList(products))
                 .contains(
-                        new Product(1L, "Carrots", "Fresh and juicy carrots from outer space"),
-                        new Product(2L, "Tomatoes", "Round and red, like sun - during blood bath sundown"));
+                        new Product(1L, "Carrots", 100, "Fresh and juicy carrots from outer space"),
+                        new Product(2L, "Tomatoes", 102, "Round and red, like sun - during blood bath sundown"));
     }
 
     @Test
@@ -66,7 +66,7 @@ public class StoreFunctionalTest {
         Product[] products = restTemplate.getForObject("/products?name={name}", Product[].class, SEARCH_NAME);
         assertThat(Arrays.asList(products))
                 .containsExactly(
-                        new Product(2L, "Tomatoes", "Round and red, like sun - during blood bath sundown"));
+                        new Product(2L, "Tomatoes", 100, "Round and red, like sun - during blood bath sundown"));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class StoreFunctionalTest {
         Product product = restTemplate.getForObject("/products/{id}", Product.class, PRODUCT_ID);
         assertThat(product)
                 .isEqualTo(
-                        new Product(1L, "Carrots", "Fresh and juicy carrots from outer space"));
+                        new Product(1L, "Carrots", 100, "Fresh and juicy carrots from outer space"));
     }
 
     @Test
@@ -86,6 +86,7 @@ public class StoreFunctionalTest {
         ResponseEntity<Cart> response = restTemplate.exchange("/carts", HttpMethod.POST, request, Cart.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody().getId()).isOfAnyClassIn(Long.class);
+        assertThat(response.getBody().getTotal()).isEqualTo(0);
         assertThat(response.getBody().getSessionId()).isEqualTo("123F");
     }
 

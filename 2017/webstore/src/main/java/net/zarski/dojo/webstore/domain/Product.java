@@ -29,13 +29,17 @@ public class Product implements Serializable {
     @Column
     private String description;
 
+    @Column
+    private int price;
+
 
     public Product() {
     }
 
-    public Product(Long id, String name, String description) {
+    public Product(Long id, String name, int price, String description) {
         this.id = id;
         this.name = name;
+        this.price = price;
         this.description = description;
     }
 
@@ -63,6 +67,13 @@ public class Product implements Serializable {
         this.description = description;
     }
 
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
 
     @Override
     public boolean equals(Object o) {

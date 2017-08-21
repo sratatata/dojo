@@ -7,7 +7,8 @@ import org.junit.experimental.categories.Category;
 import static org.assertj.core.api.Assertions.*;
 
 public class CartTest {
-    private Product EXPECTED_PRODUCT = new Product(1L, "test1", "desc1");
+    private static final Product EXPECTED_ADDITIONAL_PRODUCT = new Product(2L, "test12", 20, "desc2");
+    private Product EXPECTED_PRODUCT = new Product(1L, "test1", 10, "desc1");
 
     @Test
     @Category(FastTests.class)
@@ -61,5 +62,13 @@ public class CartTest {
                     assertThat(cartPosition).hasFieldOrPropertyWithValue("product", EXPECTED_PRODUCT);
                 });
     }
+    @Test
+    @Category(FastTests.class)
+    public void totalsCartPrice(){
+        Cart cart = new Cart("123D");
+        cart.addProduct(EXPECTED_PRODUCT, 3);
+        cart.addProduct(EXPECTED_ADDITIONAL_PRODUCT, 1);
 
+        assertThat(cart.getTotal()).isEqualTo(50);
+    }
 }

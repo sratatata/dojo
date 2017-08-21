@@ -1,5 +1,5 @@
-insert into product(id, name, description) values (1, 'Carrots', 'Fresh and juicy carrots from outer space' )
-insert into product(id, name, description) values (2, 'Tomatoes', 'Round and red, like sun - during blood bath sundown')
+insert into product(id, name, price,  description) values (1, 'Carrots',100, 'Fresh and juicy carrots from outer space' )
+insert into product(id, name, price, description) values (2, 'Tomatoes',123, 'Round and red, like sun - during blood bath sundown')
 
 insert into cart(id, session_id) values (1, '543ASD')
 

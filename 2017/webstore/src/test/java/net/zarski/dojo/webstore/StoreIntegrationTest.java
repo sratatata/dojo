@@ -61,7 +61,7 @@ public class StoreIntegrationTest {
     public void findsProductByName() {
         Store store = new Store(productsRepository, cartsRepository);
         List<Product> products = store.findProductByName(PRODUCT_NAME);
-        assertThat(products).containsExactly(new Product(2L, "Tomatoes", "Round and red, like sun - during blood bath sundown"));
+        assertThat(products).containsExactly(new Product(2L, "Tomatoes", 100, "Round and red, like sun - during blood bath sundown"));
     }
 
     @Test
