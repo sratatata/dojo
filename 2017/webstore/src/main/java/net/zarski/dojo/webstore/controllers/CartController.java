@@ -33,6 +33,14 @@ public class CartController {
         store.addProductToCart(sessionId, productId, amount);
     }
 
+    @RequestMapping(value = "{session_id}/products/{product_id}", method = RequestMethod.PATCH)
+    public void updateProductAmountInCart(@PathVariable(name = "session_id") String sessionId,
+                                 @PathVariable(name = "product_id") Long productId,
+                                 @RequestParam(name = "amount") Integer newAmount) {
+        store.removeProductFromCart(sessionId, productId);
+        store.addProductToCart(sessionId, productId, newAmount);
+    }
+
     @RequestMapping(value = "{session_id}/products/{product_id}", method = RequestMethod.DELETE)
     public void removeProductFromCart(@PathVariable(name = "session_id") String sessionId,
                                   @PathVariable(name = "product_id") Long productId) {

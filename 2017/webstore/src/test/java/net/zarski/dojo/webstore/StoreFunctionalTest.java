@@ -41,6 +41,7 @@ public class StoreFunctionalTest {
     private static final String EXISTING_CART = "543ASD";
     private static final int EXAMPLE_PRODUCTS_AMOUNT = 3;
     private static final String EXISTING_CART_WITH_PRODUCT = "QWE123";
+    private static final String EXISTING_CART_WITH_2_PRODUCTS = "ZXC321";
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -108,15 +109,28 @@ public class StoreFunctionalTest {
 
     @Test
     @Category({SlowTests.class, FunctionalTests.class})
+    public void updateAmountOfProductInCartWhenProductAlreadyAdded() throws IOException {
+        assertThat(cartsRepository.findBySessionId(EXISTING_CART_WITH_2_PRODUCTS).getProducts()).hasSize(2);
+
+        int newAmount = 1;
+        ResponseEntity<String> response = restTemplate.exchange("/carts/{session_id}/products/{product_id}?amount={amount}", HttpMethod.PUT, null, String.class, EXISTING_CART_WITH_2_PRODUCTS, PRODUCT_ID, newAmount);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Optional<CartPosition> cartPosition = cartsRepository.findBySessionId(EXISTING_CART_WITH_2_PRODUCTS).getProducts().stream().findFirst();
+        assertThat(cartPosition).isNotEmpty();
+        assertThat(cartPosition.get()).hasFieldOrPropertyWithValue("amount", 4);
+    }
+
+    @Test
+    @Category({SlowTests.class, FunctionalTests.class})
     public void updateAmountOfProductInCart() throws IOException {
         assertThat(cartsRepository.findBySessionId(EXISTING_CART_WITH_PRODUCT).getProducts()).hasSize(1);
 
         int newAmount = 1;
-        ResponseEntity<String> response = restTemplate.exchange("/carts/{session_id}/products/{product_id}?amount={amount}", HttpMethod.PUT, null, String.class, EXISTING_CART_WITH_PRODUCT, PRODUCT_ID, newAmount);
+        ResponseEntity<String> response = restTemplate.exchange("/carts/{session_id}/products/{product_id}?amount={amount}", HttpMethod.PATCH, null, String.class, EXISTING_CART_WITH_PRODUCT, PRODUCT_ID, newAmount);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Optional<CartPosition> cartPosition = cartsRepository.findBySessionId(EXISTING_CART_WITH_PRODUCT).getProducts().stream().findFirst();
         assertThat(cartPosition).isNotEmpty();
-        assertThat(cartPosition.get()).hasFieldOrPropertyWithValue("amount", 4);
+        assertThat(cartPosition.get()).hasFieldOrPropertyWithValue("amount", 1);
     }
 
     @Test

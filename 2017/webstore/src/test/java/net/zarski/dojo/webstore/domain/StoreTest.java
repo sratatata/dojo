@@ -10,6 +10,7 @@ import org.junit.experimental.categories.Category;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.*;
@@ -26,7 +27,7 @@ public class StoreTest {
     private static final Cart EXPECTED_CART = new Cart(SESSION_ID);
 
     @Test
-    public void isReturningListOfProducts(){
+    public void isReturningListOfProducts() {
         ProductsRepository products = mock(ProductsRepository.class);
         CartsRepository carts = mock(CartsRepository.class);
 
@@ -38,7 +39,7 @@ public class StoreTest {
     }
 
     @Test
-    public void isReturningProductById(){
+    public void isReturningProductById() {
         ProductsRepository products = mock(ProductsRepository.class);
         CartsRepository carts = mock(CartsRepository.class);
 
@@ -69,11 +70,11 @@ public class StoreTest {
         Store store = new Store(products, carts);
         store.registerNewCart(SESSION_ID);
 
-        verify(carts, atLeastOnce()).save((Cart) argThat(t -> ((Cart)t).getSessionId().equals("123D")));
+        verify(carts, atLeastOnce()).save((Cart) argThat(t -> ((Cart) t).getSessionId().equals("123D")));
     }
 
     @Test
-    public void isAddingProductToCart(){
+    public void isAddingProductToCart() {
         CartsRepository carts = mock(CartsRepository.class);
         ProductsRepository products = mock(ProductsRepository.class);
         Store store = new Store(products, carts);
@@ -81,11 +82,33 @@ public class StoreTest {
         when(products.findById(PRODUCT_ID)).thenReturn(EXPECTED_PRODUCT);
         when(carts.findBySessionId(SESSION_ID)).thenReturn(EXPECTED_CART);
         store.addProductToCart(SESSION_ID, PRODUCT_ID, 3);
-        verify(carts, atLeastOnce()).save((Cart) argThat(cart -> ((Cart)cart).getProducts().size() == 1));
+        verify(carts, atLeastOnce()).save((Cart) argThat(cart -> ((Cart) cart).getProducts().size() == 1));
     }
 
     @Test
-    public void isReturningCartBySessionId(){
+    public void isIncreasingProductAmountCartIfOneIsExisting() {
+        CartsRepository carts = mock(CartsRepository.class);
+        ProductsRepository products = mock(ProductsRepository.class);
+        Store store = new Store(products, carts);
+
+        when(products.findById(PRODUCT_ID)).thenReturn(EXPECTED_PRODUCT);
+        when(carts.findBySessionId(SESSION_ID)).thenReturn(EXPECTED_CART);
+        store.addProductToCart(SESSION_ID, PRODUCT_ID, 3);
+        store.addProductToCart(SESSION_ID, PRODUCT_ID, 1);
+
+        verify(carts, atLeastOnce()).save((Cart) argThat(cart -> {
+                    Optional<CartPosition> first = ((Cart) cart).getProducts().stream().findFirst();
+                    if(first.isPresent()){
+                        return first.get().getAmount() == 4;
+                    }else{
+                        return false;
+                    }
+                }
+        ));
+    }
+
+    @Test
+    public void isReturningCartBySessionId() {
         CartsRepository carts = mock(CartsRepository.class);
         ProductsRepository products = mock(ProductsRepository.class);
         Store store = new Store(products, carts);
@@ -97,7 +120,7 @@ public class StoreTest {
     }
 
     @Test
-    public void isRemovingProductFromCart(){
+    public void isRemovingProductFromCart() {
         CartsRepository carts = mock(CartsRepository.class);
         ProductsRepository products = mock(ProductsRepository.class);
         Cart mockedCart = mock(Cart.class); //non anemic domain object, contains logic
