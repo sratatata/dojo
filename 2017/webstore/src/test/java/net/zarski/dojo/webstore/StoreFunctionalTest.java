@@ -3,6 +3,7 @@ package net.zarski.dojo.webstore;
 import net.zarski.dojo.webstore.domain.Cart;
 import net.zarski.dojo.webstore.domain.CartPosition;
 import net.zarski.dojo.webstore.domain.Product;
+import net.zarski.dojo.webstore.repositories.CartsRepository;
 import org.apache.http.HttpResponse;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -42,6 +43,11 @@ public class StoreFunctionalTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Autowired
+    private CartsRepository cartsRepository;
+
+
 
     @Test
     @Category({SlowTests.class, FunctionalTests.class})
@@ -87,6 +93,7 @@ public class StoreFunctionalTest {
     public void addProductToCart() throws IOException {
         ResponseEntity<String> response = restTemplate.exchange("/carts/{session_id}/products/{product_id}?amount={amount}", HttpMethod.PUT, null, String.class, EXISTING_CART, PRODUCT_ID, EXAMPLE_PRODUCTS_AMOUNT);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(cartsRepository.findBySessionId(EXISTING_CART).getProducts()).hasSize(1);
     }
 
     @Test
@@ -95,6 +102,7 @@ public class StoreFunctionalTest {
 
         ResponseEntity<String> response = restTemplate.exchange("/carts/{session_id}/products/{product_id}", HttpMethod.DELETE, null, String.class, EXISTING_CART_WITH_PRODUCT, PRODUCT_ID);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(cartsRepository.findBySessionId(EXISTING_CART_WITH_PRODUCT).getProducts()).hasSize(0);
     }
 
     @Test

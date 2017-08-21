@@ -26,11 +26,17 @@ public class CartController {
         return store.registerNewCart(sessionId);
     }
 
-    @RequestMapping(value = "{session_id}/products/{product_id}", method = RequestMethod.PUT, produces="application/json")
-    public void addsProductToCart(@PathVariable(name = "session_id") String sessionId,
+    @RequestMapping(value = "{session_id}/products/{product_id}", method = RequestMethod.PUT)
+    public void addProductToCart(@PathVariable(name = "session_id") String sessionId,
                                   @PathVariable(name = "product_id") Long productId,
                                   @RequestParam(name = "amount") Integer amount) {
         store.addProductToCart(sessionId, productId, amount);
+    }
+
+    @RequestMapping(value = "{session_id}/products/{product_id}", method = RequestMethod.DELETE)
+    public void removeProductFromCart(@PathVariable(name = "session_id") String sessionId,
+                                  @PathVariable(name = "product_id") Long productId) {
+        store.removeProductFromCart(sessionId, productId);
     }
 
 
