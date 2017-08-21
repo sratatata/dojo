@@ -1,8 +1,6 @@
 package net.zarski.dojo.webstore.domain;
 
 import net.zarski.dojo.webstore.FastTests;
-import net.zarski.dojo.webstore.domain.Cart;
-import net.zarski.dojo.webstore.domain.Product;
 import net.zarski.dojo.webstore.repositories.CartsRepository;
 import net.zarski.dojo.webstore.services.Store;
 import net.zarski.dojo.webstore.repositories.ProductsRepository;
@@ -108,7 +106,7 @@ public class StoreTest {
         when(products.findById(PRODUCT_ID)).thenReturn(EXPECTED_PRODUCT);
         when(carts.findBySessionId(SESSION_ID)).thenReturn(mockedCart);
 
-        store.removeProductToCart(SESSION_ID, PRODUCT_ID, 3);
+        store.removeProductFromCart(SESSION_ID, PRODUCT_ID);
 
         verify(mockedCart).removeProduct(EXPECTED_PRODUCT);
         verify(carts).save(mockedCart);

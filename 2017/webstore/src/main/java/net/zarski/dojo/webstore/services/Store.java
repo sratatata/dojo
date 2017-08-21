@@ -51,7 +51,7 @@ public class Store {
         return cartsRepository.findBySessionId(sessionId);
     }
 
-    public void removeProductToCart(String sessionId, long productId, int amount) {
+    public void removeProductFromCart(String sessionId, long productId) {
         Cart cart = this.findCartBySessionId(sessionId);
         Product product = this.findProductById(productId);
         cart.removeProduct(product);
